@@ -20,6 +20,11 @@ variables:
 # This template uses jdk8 for verifying and deploying images
 image: maven:3.3.9-jdk-8
 
+stages:
+  -build
+  -test
+  -staging
+  -deploy
 
 # Cache downloaded dependencies and plugins between builds.
 # To keep cache across branches add 'key: "$CI_JOB_NAME"'
@@ -42,3 +47,18 @@ run-junit-tests:
   stage: test
   script:
     - 'mvn $MAVEN_CLI_OPTS clean test -Dfmt.skip=true'
+  artifacts:
+    when: always
+    reports:
+      junit: target/surefire-reports/TEST-*.xml
+
+deploy-to-test:
+  stage: staging
+  script:
+    - 'echo deploy to test environment'
+
+deploy-to-prod:
+  stage: deploy
+  when: manual
+  script:
+    - 'echo deploy to prod environment'
