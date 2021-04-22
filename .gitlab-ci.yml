@@ -32,3 +32,10 @@ build:
   script:
     - 'mvn $MAVEN_CLI_OPTS clean install -DskipTests -Dfmt.skip=true'
 
+code-formatting-check:
+  stage: test
+  script:
+    - 'mvn $MAVEN_CLI_OPTS fmt:check'
+  only:
+    varibles:
+      -$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
