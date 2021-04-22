@@ -20,6 +20,7 @@ variables:
 # This template uses jdk8 for verifying and deploying images
 image: maven:3.3.9-jdk-8
 
+
 # Cache downloaded dependencies and plugins between builds.
 # To keep cache across branches add 'key: "$CI_JOB_NAME"'
 cache:
@@ -36,6 +37,8 @@ code-formatting-check:
   stage: test
   script:
     - 'mvn $MAVEN_CLI_OPTS fmt:check'
-  only:
-    varibles:
-      -$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+run-junit-tests:
+  stage: test
+  script:
+    - 'mvn $MAVEN_CLI_OPTS clean test -Dfmt.skip=true'
